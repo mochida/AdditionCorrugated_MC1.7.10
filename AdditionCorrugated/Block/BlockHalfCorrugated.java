@@ -10,11 +10,11 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockHalfCorrugated extends BlockSlab
 {
-
 	public BlockHalfCorrugated(boolean p_i45410_1_, Material p_i45410_2_)
 	{
 		super(p_i45410_1_, Material.tnt);
@@ -23,12 +23,6 @@ public class BlockHalfCorrugated extends BlockSlab
 		setHardness(0.2F);
 		setResistance(0.0F);
 		setStepSound(Block.soundTypeStone);
-	}
-
-	@Override
-	public String func_150002_b(int p_150002_1_)
-	{
-		return null;
 	}
 	
 	@Override
@@ -56,6 +50,31 @@ public class BlockHalfCorrugated extends BlockSlab
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item par1, List par2List)
 	{
-		par2List.add(new ItemStack(this));
+		for(int i = 0; i < 4; ++i)
+		{
+		par2List.add(new ItemStack(this, 1, i));
+		}
+	}
+	
+	public int getMobilityFlag()
+	{
+		return 0;
+	}
+	
+	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	{
+		return super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, 1 - par5);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public int getRenderBlockPass()
+	{
+		return 1;
+	}
+
+	@Override
+	public String func_150002_b(int p_150002_1_)
+	{
+		return null;
 	}
 }
