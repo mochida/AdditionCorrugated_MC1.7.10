@@ -2,22 +2,21 @@ package AdditionCorrugated.Block;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.*;
 
-public class BlockRecycledCorrugated extends Block
+public class BlockRecycledCorrugatedLight2 extends BlockGravel
 {
-	public BlockRecycledCorrugated()
+	public BlockRecycledCorrugatedLight2()
 	{
-		super(Material.tnt);
-		setBlockName("BlockRecycledCorrugated");
+		super();
+		setBlockName("BlockRecycledCorrugatedLight2");
 		setBlockTextureName("additioncorrugated:recycledcorrugated");
 		setHardness(0.5F);
 		setResistance(0.0F);
 		setStepSound(Block.soundTypeStone);
+		setLightLevel(1.0F);
 	}
-
-	@Override
+	
 	public int quantityDropped(int meta, int fortune, Random random)
 	{
 		return quantityDroppedWithBonus(fortune, random);

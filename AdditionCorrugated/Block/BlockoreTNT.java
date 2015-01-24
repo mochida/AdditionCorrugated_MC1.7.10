@@ -1,4 +1,3 @@
-
 package AdditionCorrugated.Block;
 
 import java.util.Random;
@@ -32,16 +31,10 @@ public class BlockoreTNT extends Block implements IWorldGenerator
 		setResistance(5.0F);
 		setStepSound(Block.soundTypeStone);
 	}
-
-	public int quantityDropped(int meta, int fortune, Random random)
-	{
-		return quantityDroppedWithBonus(fortune, random);
-	}
 	
-	@Override
-	public int quantityDropped(Random rand)
+	public Block quantityDropped(int par1,Random rand)
 	{
-		return 1 +  rand.nextInt(2);
+		return Blocks.tnt;
 	}
 	
 	public int quantityDroppedWithBonus(int par1, Random rand)

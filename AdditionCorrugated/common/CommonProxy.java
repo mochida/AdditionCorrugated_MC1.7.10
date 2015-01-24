@@ -12,13 +12,13 @@ public class CommonProxy
 		
 	}
 	
-//	public World getClientWorld()
-//	{
-//		return null;
-//	}
+/**	public World getClientWorld()
+	{
+		return null;
+	}
 	
-//	public void registerTileEntity()
-//	{
-//		GameRegistry.registerTileEntity(TileEntity.calss, "TileEntity");
-//	}
+	public void registerTileEntity()
+	{
+		GameRegistry.registerTileEntity(TileEntity.calss, "TileEntity");
+	}**/
 }

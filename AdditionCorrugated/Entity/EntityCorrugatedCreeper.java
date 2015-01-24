@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.Item;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import AdditionCorrugated.AdditionCorrugatedCore;
 
@@ -19,10 +20,9 @@ public class EntityCorrugatedCreeper extends EntityCreeper
 		this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(2, new EntityAILookIdle(this));
 		this.tasks.addTask(3, new EntityAISwimming(this));
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityCorrugated.class, 0, false));
 		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
 	}
-		
+	
 	@Override
 	public String getLivingSound()
 	{
@@ -47,13 +47,19 @@ public class EntityCorrugatedCreeper extends EntityCreeper
 		this.playSound("mob.skeleton.step", 0.15F, 1.0F);
 	}
 	
+	public Block getDorpBlock()
+	{
+		return AdditionCorrugatedCore.Corrugated;
+	}
+	
 	public Item getDorpItem()
 	{
 		return AdditionCorrugatedCore.CorrugatedAxe;
 	}
 	
-	public Block getDorpBlock()
-	{
-		return AdditionCorrugatedCore.Corrugated;
-	}
+	public void onDeath(DamageSource par1DamageSource)
+    {
+		this.getDropItem();
+		this.getDorpBlock();
+    }
 }

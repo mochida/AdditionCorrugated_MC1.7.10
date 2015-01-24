@@ -1,6 +1,5 @@
 package AdditionCorrugated.GUI;
 
-import AdditionCorrugated.TileEntity.*;
 import AdditionCorrugated.Block.BlockACrecycle;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.*;

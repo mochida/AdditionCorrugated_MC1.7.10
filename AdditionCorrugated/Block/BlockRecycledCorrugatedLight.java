@@ -11,8 +11,8 @@ public class BlockRecycledCorrugatedLight extends Block
 		super(Material.tnt);
 		setBlockName("BlockRecycledCorrugatedLight");
 		setBlockTextureName("additioncorrugated:recycledcorrugated");
-		setHardness(10.0F);
-		setResistance(500.0F);
+		setHardness(0.5F);
+		setResistance(0.0F);
 		setStepSound(Block.soundTypeStone);
 		setLightLevel(1.0F);
 	}

@@ -2,19 +2,13 @@ package AdditionCorrugated.Block;
 
 import java.util.Random;
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockCorrugatedLight extends Block
+public class BlockCorrugatedLight2 extends BlockGravel
 {
-	public BlockCorrugatedLight()
+	public BlockCorrugatedLight2()
 	{
-		super(Material.tnt);
-		setBlockName("BlockCorrugatedLight");
+		super();
+		setBlockName("BlockCorrugatedLight2");
 		setBlockTextureName("additioncorrugated:block_corrugated");
 		setHardness(0.5F);
 		setResistance(0.0F);

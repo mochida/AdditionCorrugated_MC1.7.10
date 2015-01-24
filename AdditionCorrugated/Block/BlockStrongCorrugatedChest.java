@@ -11,7 +11,7 @@ public class BlockStrongCorrugatedChest extends BlockChest
 	{
 		super(p_i45397_1_);
 		setBlockName("BlockStrongCorrugatedChest");
-		setBlockTextureName("additioncorrugated:no");
+		setBlockTextureName("additioncorrugated:block_strongcorrugated");
 		setHardness(10.0F);
 		setResistance(500.0F);
 		setStepSound(Block.soundTypeStone);

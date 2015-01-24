@@ -3,7 +3,6 @@ package AdditionCorrugated.Block;
 import java.util.Random;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.*;
@@ -17,12 +16,12 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-public class BlockCorrugated extends Block
+public class BlockCorrugated2 extends BlockGravel
 {
-	public BlockCorrugated()
+	public BlockCorrugated2()
 	{
-		super(Material.tnt);
-		setBlockName("BlockCorrugated");
+		super();
+		setBlockName("BlockCorrugated2");
 		setBlockTextureName("additioncorrugated:block_corrugated");
 		setHardness(0.5F);
 		setResistance(0.0F);
@@ -35,7 +34,8 @@ public class BlockCorrugated extends Block
 		return quantityDroppedWithBonus(fortune, random);
 	}
 	
-	public int quantityDroppedWithBonus(Random rand)
+	@Override
+	public int quantityDropped(Random rand)
 	{
 		return 1;
 	}

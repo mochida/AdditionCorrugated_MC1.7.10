@@ -18,8 +18,8 @@ public class BlockBlackStone extends Block implements IWorldGenerator
     {
         super(Material.rock);
 		setBlockName("BlackStone");
-    	setHardness(10.0F);
-        setResistance(100.0F);
+    	setHardness(5.0F);
+        setResistance(50.0F);
         setStepSound(soundTypeStone);
 		setBlockTextureName("additioncorrugated:block_blackstone");
     }

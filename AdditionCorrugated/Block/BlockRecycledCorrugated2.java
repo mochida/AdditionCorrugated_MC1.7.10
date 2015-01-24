@@ -1,16 +1,14 @@
 package AdditionCorrugated.Block;
 
 import java.util.Random;
+import net.minecraft.block.*;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-
-public class BlockRecycledCorrugated extends Block
+public class BlockRecycledCorrugated2 extends BlockGravel
 {
-	public BlockRecycledCorrugated()
+	public BlockRecycledCorrugated2()
 	{
-		super(Material.tnt);
-		setBlockName("BlockRecycledCorrugated");
+		super();
+		setBlockName("BlockRecycledCorrugated2");
 		setBlockTextureName("additioncorrugated:recycledcorrugated");
 		setHardness(0.5F);
 		setResistance(0.0F);

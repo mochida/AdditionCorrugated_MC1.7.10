@@ -1,7 +1,6 @@
 package AdditionCorrugated.Block;
 
 import java.util.Random;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import AdditionCorrugated.AdditionCorrugatedCore;
 import net.minecraft.block.Block;
@@ -14,8 +13,6 @@ import net.minecraft.world.World;
 
 public class BlockACrecycle extends Block
 {
-//	public ItemStack[] itemStacks = new ItemStack[10];
-	
 	public BlockACrecycle()
 	{
 		super(Material.tnt);
@@ -49,8 +46,8 @@ public class BlockACrecycle extends Block
 		return true;
     }
 	
-//	public int addACRecycleRecipe()
-//	{
-//		return (Integer) null;		
-//	}
+/**	public int addACRecycleRecipe()
+	{
+		return (Integer) null;		
+	}**/
 }

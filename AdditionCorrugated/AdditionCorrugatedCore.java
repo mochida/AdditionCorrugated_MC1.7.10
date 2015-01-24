@@ -1,59 +1,48 @@
 package AdditionCorrugated;
 
-import java.awt.Color;
-import java.lang.reflect.Method;
-import shift.mceconomy2.api.MCEconomyAPI;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import AdditionCorrugated.*;
+import net.minecraft.block.*;
 import cpw.mods.fml.common.*;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.Mod.*;
 import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.*;
 import cpw.mods.fml.common.registry.*;
 import cpw.mods.fml.client.registry.*;
-import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.*;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.potion.Potion;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraftforge.common.*;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.*;
-import net.minecraftforge.common.util.EnumHelper;
+import net.minecraft.potion.*;
+import net.minecraft.creativetab.*;
+import net.minecraftforge.common.config.*;
+import net.minecraftforge.common.util.*;
 import AdditionCorrugated.GUI.*;
 import AdditionCorrugated.Item.*;
 import AdditionCorrugated.Block.*;
 import AdditionCorrugated.Entity.*;
-import AdditionCorrugated.*;
 import AdditionCorrugated.common.*;
 import AdditionCorrugated.Entity.Render.*;
 
-@Mod(modid="Addition Corrugated", name="Addition Corrugated", version="1.6.0_alpha4_MC1.7.10")
+@Mod(modid="Addition Corrugated", name="Addition Corrugated", version="1.6.0_alpha5_MC1.7.10")
 public class AdditionCorrugatedCore
 {
 /*********予定*********
-	防具?
-	ACRecycle(｛強化｝紙→｛強化｝再生紙)
-	木?
-	植物?
+	木
+	植物
+	防具
 	可燃
-	Entity化(Config選択式)
-	カッターで早く壊す
-	チェストのテクスチャの修正
-	ハーフブロックの修正
-	mcmod.infoの修正
-	ダンボールチェストと強化ダンボールチェストを並べるとテクスチャがラージになる不具合
+	AC通販
+	MOBのスポーン&Drop
+	ハーフブロックの不具合修正
+	ACRecycle(｛強化｝紙→｛強化｝再生紙)
+	ダンボールチェストと強化ダンボールチェストのテクスチャ&並べるとテクスチャがラージになる不具合修正
 **********************/
 	@Mod.Instance("Addition Corrugated")
 	public static AdditionCorrugatedCore instance;
 	
 	@SidedProxy(clientSide = "AdditionCorrugated.Client.ClientProxy", serverSide = "AdditionCorrugated.common.CommonProxy")
 	public static CommonProxy proxy;
+	
+	public static final int ACRecycleGUI = 1;
 	
 	public static final CreativeTabs AdditionCorrugatedMODTab = new CreativeTabAdditionCorrugatedMOD("AdditionCorrugatedMODTab");
 	
@@ -62,7 +51,13 @@ public class AdditionCorrugatedCore
 	public static final Block command_Block = (Blocks.command_block).setCreativeTab(CreativeTabs.tabRedstone);
 	
 	public static final Item command_block_minecart = (Items.command_block_minecart).setCreativeTab(CreativeTabs.tabTransport);
-		
+	
+	public static boolean DebugMode = false;
+	
+	public static int CorrugatedCreeperID;
+	
+	public static int ACVillagerID;
+	
 	public static Item.ToolMaterial CORRUGATED = EnumHelper.addToolMaterial("CORRUGATED", 0, 100, 1.0F, 1.0F, 1);
 	
 	public static Item.ToolMaterial STRONGCORRUGATED = EnumHelper.addToolMaterial("STRONGCORRUGATED", 2, 500, 3.0F, 3.0F, 5);
@@ -78,22 +73,6 @@ public class AdditionCorrugatedCore
 	public static Item.ToolMaterial METEORITE = EnumHelper.addToolMaterial("METEORITE", 0, 1000, 1.0F, 1.0F, 15);
 	
 	public static Item.ToolMaterial MYTHRIL = EnumHelper.addToolMaterial("MYTHRIL", 0, 1000, 2.0F, 2.0F, 15);
-	
-	public static ArmorMaterial CORRUGATED_PG = EnumHelper.addArmorMaterial("CORRUGATED_PG", 0, new int[]{1, 1, 1, 1}, 1);
-	
-	public static ArmorMaterial STRONGCORRUGATED_PG = EnumHelper.addArmorMaterial("STRONGCORRUGATED_PG", 2, new int[]{2, 2, 2, 2}, 2);
-	
-	public static ArmorMaterial ADAMANTITE_PG = EnumHelper.addArmorMaterial("ADAMANTITE_PG", 3, new int[]{3, 3, 3, 3}, 3);
-	
-	public static ArmorMaterial COBALT_PG = EnumHelper.addArmorMaterial("COBALT_PG", 4, new int[]{4, 4, 4, 4}, 4);
-	
-	public static ArmorMaterial DEMONITE_PG = EnumHelper.addArmorMaterial("DEMONITE_PG", 5, new int[]{5, 5, 5, 5}, 5);
-	
-	public static ArmorMaterial HELLSTONE_PG = EnumHelper.addArmorMaterial("HELLSTONE_PG", 6, new int[]{6, 6, 6, 6}, 6);
-	
-	public static ArmorMaterial METEORITE_PG = EnumHelper.addArmorMaterial("METEORITE_PG", 7, new int[]{7, 7, 7, 7}, 7);
-	
-	public static ArmorMaterial MYTHRIL_PG = EnumHelper.addArmorMaterial("MYTHRIL_PG", 8, new int[]{8, 8, 8, 8}, 8);
 	
 	public static Block Corrugated;
 	
@@ -158,8 +137,6 @@ public class AdditionCorrugatedCore
 	public static Block RecycledCorrugatedLight;
 	
 	public static Block StrongRecycledCorrugatedLight;
-	
-//	public static Block Dryer;
 	
 	public static Item RecycledPaper;
 	
@@ -323,30 +300,24 @@ public class AdditionCorrugatedCore
 	
 	public static Item MythrilPickaxe;
 	
-	public static Item Spawn_Egg_Test;
-	
 	public static Item Spawn_Egg_CorrugatedCreeper;
 	
 	public static Item StrongRecycledPaper;
-	
-//	public static Item CorrugatedArmor;
-	
+		
 	public static Item RecycledCorrugatedBoard;
 	
 	public static Item StrongRecycledCorrugatedBoard;
 	
-	public static final int ACRecycleGUI = 1;
-	
-	public static int ACVillagerID;
-	
-	public static int CorrugatedNewID;
-	
-	public static int CorrugatedCreeperID;
-	
 	private ACTrade 取引;
 	
+	@Mod.EventHandler
+	public void load(FMLInitializationEvent event)
+	{
+		FMLCommonHandler.instance().bus().register(Cutter);
+	}
+
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)	
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		Corrugated = new BlockCorrugated()
 		.setCreativeTab(AdditionCorrugatedMODTab);
@@ -443,9 +414,6 @@ public class AdditionCorrugatedCore
 		
 		RecycledCorrugatedLight = new BlockRecycledCorrugatedLight()
 		.setCreativeTab(AdditionCorrugatedMODTab);
-		
-//		Dryer = new BlockDryer()
-//		.setCreativeTab(AdditionCorrugatedMOD_Under_DevelopmentTab);
 		
 		StrongPaper = (new Item())
 				.setUnlocalizedName("StrongPaper")
@@ -936,19 +904,10 @@ public class AdditionCorrugatedCore
 				.setMaxStackSize(1)
 				.setCreativeTab(AdditionCorrugatedMODTab);
 		
-		Spawn_Egg_Test = (new ItemSpawn_Egg_Test(Color.BLUE.getRGB(), Color.ORANGE.getRGB()))
-				.setUnlocalizedName("Spawn_Egg_Test")
-				.setTextureName("spawn_egg")
-				.setCreativeTab(AdditionCorrugatedMOD_Under_DevelopmentTab);
-		
 		Spawn_Egg_CorrugatedCreeper = (new ItemSpawn_Egg_CorrugatedCreeper())
 				.setUnlocalizedName("Spawn_Egg_CorrugatedCreeper")
 				.setTextureName("spawn_egg")
 				.setCreativeTab(AdditionCorrugatedMODTab);
-		
-//		CorrugatedArmor = (new ItemCorrugatedArmor(CORRUGATED_PG))
-//				.setUnlocalizedName("CorrugatedArmor")
-//				.setCreativeTab(AdditionCorrugatedMODTab);
 		
 		RecycledPaper = (new Item())
 				.setUnlocalizedName("RecycledPaper")
@@ -1037,8 +996,6 @@ public class AdditionCorrugatedCore
 		GameRegistry.registerBlock(StrongRecycledCorrugatedLight, "StrongRecycledCorrugatedLight");
 		
 		GameRegistry.registerBlock(RecycledCorrugatedLight, "RecycledCorrugatedLight");
-		
-//		GameRegistry.registerBlock(Dryer, "Dryer");
 		
 		GameRegistry.registerItem(StrongPaper, "itemStrongPaper");
 		
@@ -1200,12 +1157,8 @@ public class AdditionCorrugatedCore
 		
 		GameRegistry.registerItem(MythrilPickaxe, "MythrilPickaxe");
 		
-		GameRegistry.registerItem(Spawn_Egg_Test, "Spawn_Egg_Test");
-		
 		GameRegistry.registerItem(Spawn_Egg_CorrugatedCreeper, "Spawn_Egg_CorrugatedCreeper");
-		
-//		GameRegistry.registerItem(CorrugatedArmor, "CorrugatedArmor");
-		
+				
 		GameRegistry.registerItem(RecycledPaper, "RecycledPaper");
 		
 		GameRegistry.registerItem(StrongRecycledPaper, "StrongRecycledPaper");
@@ -1214,60 +1167,11 @@ public class AdditionCorrugatedCore
 		
 		GameRegistry.registerItem(StrongRecycledCorrugatedBoard, "StrongRecycledCorrugatedBoard");
 		
-		OreDictionary.registerOre("oreFluorite", new ItemStack(this.oreFluorite, 1, 0));
-		
-		OreDictionary.registerOre("gemFluorite", new ItemStack(this.Fluorite, 1, 0));
-		
-		OreDictionary.registerOre("oreTNT", new ItemStack(this.oreTNT, 1, 0));
-		
-		OreDictionary.registerOre("natto", new ItemStack(this.FermentedSoybeans, 1, 0));
-		
-		OreDictionary.registerOre("soybeans", new ItemStack(this.Soybeans, 1, 0));
-		
-		OreDictionary.registerOre("bottlesoysauce", new ItemStack(this.SoySauce, 1, 0));
-		
-		OreDictionary.registerOre("oreAdamantite", new ItemStack(this.oreAdamantite, 1, 0));
-		
-		OreDictionary.registerOre("oreCobalt", new ItemStack(this.oreCobalt, 1, 0));
-		
-		OreDictionary.registerOre("oreDemonite", new ItemStack(this.oreDemonite, 1, 0));
-		
-		OreDictionary.registerOre("oreHellstone", new ItemStack(this.oreHellstone, 1, 0));
-		
-		OreDictionary.registerOre("oreMeteorite", new ItemStack(this.oreMeteorite, 1, 0));
-		
-		OreDictionary.registerOre("oreMythril", new ItemStack(this.oreMythril, 1, 0));
-		
-		OreDictionary.registerOre("Adamantite", new ItemStack(this.Adamantite, 1, 0));
-		
-		OreDictionary.registerOre("Cobalt", new ItemStack(this.Cobalt, 1, 0));
-		
-		OreDictionary.registerOre("Demonite", new ItemStack(this.Demonite, 1, 0));
-		
-		OreDictionary.registerOre("Hellstone", new ItemStack(this.Hellstone, 1, 0));
-		
-		OreDictionary.registerOre("Meteorite", new ItemStack(this.Meteorite, 1, 0));
-		
-		OreDictionary.registerOre("Mythril", new ItemStack(this.Mythril, 1, 0));
-		
-		OreDictionary.registerOre("Rice", new ItemStack(this.Rice, 1, 0));
-		
-		OreDictionary.registerOre("JapaneseLeek", new ItemStack(this.JapaneseLeek, 1, 0));
-		
-		OreDictionary.registerOre("GlutinousRice", new ItemStack(this.GlutinousRice, 1, 0));
-		
-		OreDictionary.registerOre("RiceCake", new ItemStack(this.RiceCake, 1, 0));
-		
-		OreDictionary.registerOre("oreSilver", new ItemStack(this.oreSilver, 1, 0));
-		
-		OreDictionary.registerOre("ingotSilver", new ItemStack(this.Silver, 1, 0));
-		
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		try
 		{
 			config.load();
 			ACVillagerID = config.get(Configuration.CATEGORY_GENERAL, "ACVillagerID", 9).getInt();
-			CorrugatedNewID = config.get(Configuration.CATEGORY_GENERAL, "Modding_EntityID", 20).getInt();
 			CorrugatedCreeperID = config.get(Configuration.CATEGORY_GENERAL, "CorrugatedCreeperID", 25).getInt();
 		}
 		catch (Exception e)
@@ -1278,614 +1182,104 @@ public class AdditionCorrugatedCore
 		{
 			config.save();
 		}
-		}
+	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		GameRegistry.addRecipe(new ItemStack(Corrugated, 1),
-		new Object[]{ "X X","X X","XXX",
-				'X',Items.paper});
+		GameRegistry.registerWorldGenerator(new BlockoreMeteorite(), 1);
 		
-		GameRegistry.addRecipe(new ItemStack(Corrugated, 1),
-				new Object[]{ "XXX","XXX","XXX",
-						'X',CorrugatedBoard});
+		GameRegistry.registerWorldGenerator(new BlockoreHellstone(), 2);
 		
-		GameRegistry.addShapelessRecipe(new ItemStack(CorrugatedBoard, 9),
-				new Object[]{
-				new ItemStack(Corrugated,1)});
+		GameRegistry.registerWorldGenerator(new BlockoreDemonite(), 3);
 		
-		GameRegistry.addRecipe(
-				new ShapedOreRecipe(
-				new ItemStack(CorrugatedLight, 1, 0),
-				new Object[]{"Y Y","YXY","YYY",
-					Character.valueOf('X'),"gemFluorite",
-					Character.valueOf('Y'), new ItemStack(Items.paper, 1, 0)}));
+		GameRegistry.registerWorldGenerator(new BlockoreMythril(), 4);
 		
-		GameRegistry.addRecipe(new ItemStack(StrongCorrugated, 1),
-				new Object[]{ "X X","X X","XXX",
-						'X',StrongPaper});
+		GameRegistry.registerWorldGenerator(new BlockoreCobalt(), 5);
 		
-		GameRegistry.addRecipe(
-				new ShapedOreRecipe(
-				new ItemStack(StrongCorrugatedLight, 1, 0),
-				new Object[]{"Y Y","YXY","YYY",
-					Character.valueOf('X'),"gemFluorite",
-					Character.valueOf('Y'), new ItemStack(StrongPaper, 1, 0)}));
+		GameRegistry.registerWorldGenerator(new BlockoreAdamantite(), 6);
 		
-		GameRegistry.addRecipe(new ItemStack(Cutter, 1),
-				new Object[]{ "XYX","XYX","XYX",
-						'X',Items.stick,'Y',Edge});
+		GameRegistry.registerWorldGenerator(new BlockoreFluorite(), 7);
 		
-		GameRegistry.addShapelessRecipe(new ItemStack(StrongPaper, 1),
-				new Object[]{
-				new ItemStack(Items.paper,1),new ItemStack(Blocks.obsidian,1)});
+		GameRegistry.registerWorldGenerator(new BlockoreTNT(), 8);
 		
-		GameRegistry.addShapelessRecipe(new ItemStack(Edge, 1),
-				new Object[]{
-					new ItemStack(PolishngPowder,1),new ItemStack(RustyEdge,1)});
+		GameRegistry.registerWorldGenerator(new BlockBlackStone(), 9);
 		
-		GameRegistry.addSmelting(Items.iron_ingot, new ItemStack(Edge, 1), 0.75F);
+		GameRegistry.registerWorldGenerator(new BlockoreSilver(), 10);
 		
-		GameRegistry.addSmelting(oreFluorite, new ItemStack(Fluorite, 1), 0.99F);
+		GameRegistry.registerFuelHandler(new ACFuelHandler());
 		
-		GameRegistry.addSmelting(oreAdamantite, new ItemStack(Adamantite, 1), 0.99F);
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GUIHandler());
 		
-		GameRegistry.addSmelting(oreCobalt, new ItemStack(Cobalt, 1), 0.99F);
+		(new AdditionCorrugated.Recipes()).addRecipe();
 		
-		GameRegistry.addSmelting(oreDemonite, new ItemStack(Demonite, 1), 0.99F);
+		(new AdditionCorrugated.Recipes()).addShapelessRecipe();
 		
-		GameRegistry.addSmelting(oreHellstone, new ItemStack(Hellstone, 1), 0.99F);
+		(new AdditionCorrugated.Recipes()).addSmelting();
 		
-		GameRegistry.addSmelting(oreMeteorite, new ItemStack(Meteorite, 1), 0.99F);
+		(new AdditionCorrugated.ACOreDictionary()).init();
 		
-		GameRegistry.addSmelting(oreMythril, new ItemStack(Mythril, 1), 0.99F);
+		proxy.init();
 		
-		GameRegistry.addSmelting(oreSilver, new ItemStack(Silver, 1), 0.99F);
+		取引 = new ACTrade();
 		
-		GameRegistry.addRecipe(new ItemStack(StrongCorrugated, 1),
-				new Object[]{ "XXX","XXX","XXX",
-						'X',StrongCorrugatedBoard});
+		VillagerRegistry.instance().registerVillagerId(ACVillagerID);
 		
-		GameRegistry.addShapelessRecipe(new ItemStack(StrongCorrugatedBoard, 9),
-				new Object[]{
-				new ItemStack(StrongCorrugated,1)});
+		VillagerRegistry.instance().registerVillageTradeHandler(ACVillagerID, 取引);
 		
-		GameRegistry.addShapelessRecipe(new ItemStack(TemperedGlass, 1),
-				new Object[]{
-				new ItemStack(Blocks.glass,1),new ItemStack(Blocks.obsidian,1)});
-		
-		GameRegistry.addRecipe(new ItemStack(Gum, 1),
-				new Object[]{ "XXX","YYY"," Z ",
-						'X',Items.sugar,'Y',Items.wheat,'Z',Items.water_bucket});
-		
-		GameRegistry.addShapelessRecipe(new ItemStack(MintGum, 6),
-				new Object[]{
-				new ItemStack(Gum,1),new ItemStack(Items.gold_ingot,1)});
-		
-		GameRegistry.addRecipe(new ItemStack(SuperMintGum, 1),
-				new Object[]{ " Y ","YXY"," Y ",
-						'X',MintGum,'Y',Items.redstone});
-		
-		GameRegistry.addRecipe(new ItemStack(ChocolateBar, 1),
-				new Object[]{ " X ","YZY","ZYZ",
-						'X',Items.water_bucket,'Y',Items.sugar,'Z',new ItemStack(Items.blaze_powder, 1, 3)});
-		
-			GameRegistry.addShapelessRecipe(new ItemStack(TStone, 1),
-			new Object[]{
-				new ItemStack(Blocks.tnt,1),new ItemStack(Blocks.stone,1)});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(RiceCake, 1),
-					new Object[]{
-					new ItemStack(GlutinousRice,1),new ItemStack(Items.water_bucket,1)});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(PickledPlum, 1),
-					new Object[]{
-					new ItemStack(SolarFragment,1),new ItemStack(Items.water_bucket,1),new ItemStack(Plum,1)});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(Straw, 1),
-					new Object[]{
-					new ItemStack(SolarFragment,1),new ItemStack(Items.wheat,1)});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(BlackStone, 1),
-					new Object[]{
-					new ItemStack(Blocks.stone,1),new ItemStack(Items.blaze_powder, 1, 0)});
-			
-			GameRegistry.addRecipe(new ItemStack(Dumpling, 1),
-					new Object[]{ "X Y"," X ","  Z",
-							'X',RiceCake,'Y',SoySauce,'Z',new ItemStack(Items.stick, 1)});
-			
-			GameRegistry.addRecipe(new ItemStack(FermentedSoybeans, 1),
-					new Object[]{ " X "," Y "," Z ",
-							'X',SoySauce,'Y',Soybeans,'Z',Straw});
-			
-			GameRegistry.addRecipe(new ItemStack(Blocks.sponge, 1),
-					new Object[]{ "XXX","XXX","XXX",
-							'X',DrySpongeGourd});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(DrySpongeGourd, 1),
-					new Object[]{
-					new ItemStack(SpongeGourd,1),new ItemStack(SolarFragment, 1)});
-			
-			GameRegistry.addRecipe(new ItemStack(CorrugatedSword, 1),
-					new Object[]{ " X "," X "," Y ",
-							'X',Corrugated,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(StrongCorrugatedSword, 1),
-					new Object[]{ " X "," X "," Y ",
-							'X',StrongCorrugated,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(CorrugatedAxe, 1),
-					new Object[]{ "XX ","XY "," Y ",
-							'X',Corrugated,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(StrongCorrugatedAxe, 1),
-					new Object[]{ "XX ","XY "," Y ",
-							'X',StrongCorrugated,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(CorrugatedPickaxe, 1),
-					new Object[]{ "XXX"," Y "," Y ",
-							'X',Corrugated,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(StrongCorrugatedPickaxe, 1),
-					new Object[]{ "XXX"," Y "," Y ",
-							'X',StrongCorrugated,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(CorrugatedShovel, 1),
-					new Object[]{ " X "," Y "," Y ",
-							'X',Corrugated,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(StrongCorrugatedShovel, 1),
-					new Object[]{ " X "," Y "," Y ",
-							'X',StrongCorrugated,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(CorrugatedHoe, 1),
-					new Object[]{ "XX "," Y "," Y ",
-							'X',Corrugated,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(StrongCorrugatedHoe, 1),
-					new Object[]{ "XX "," Y "," Y ",
-							'X',StrongCorrugated,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(CorrugatedTorch, 1),
-					new Object[]{ "X","Y",
-							'X',CorrugatedLight,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(StrongCorrugatedTorch, 1),
-					new Object[]{ "X","Y",
-							'X',StrongCorrugatedLight,'Y',Items.stick});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(GoldGravel, 1),
-					new Object[]{
-					new ItemStack(Blocks.gravel,1),new ItemStack(Items.gold_ingot,1)});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(SilverGravel, 1),
-					new Object[]{
-					new ItemStack(Blocks.gravel,1),new ItemStack(Silver,1)});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(StarGravel, 1),
-					new Object[]{
-					new ItemStack(Blocks.gravel,1),new ItemStack(Star,1)});
-			
-			GameRegistry.addRecipe(new ItemStack(CorrugatedChest, 1),
-					new Object[]{ "XXX","X X","XXX",
-							'X',Items.paper});
-			
-			GameRegistry.addRecipe(new ItemStack(StrongCorrugatedChest, 1),
-					new Object[]{ "XXX","X X","XXX",
-							'X',StrongPaper});
-			
-			GameRegistry.addRecipe(new ItemStack(AdamantiteSword, 1),
-					new Object[]{ " X "," X "," Y ",
-							'X',Adamantite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(AdamantiteHoe, 1),
-					new Object[]{ "XX "," Y "," Y ",
-							'X',Adamantite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(AdamantiteShovel, 1),
-					new Object[]{ " X "," Y "," Y ",
-							'X',Adamantite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(AdamantiteAxe, 1),
-					new Object[]{ "XX ","XY "," Y ",
-							'X',Adamantite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(AdamantitePickaxe, 1),
-					new Object[]{ "XXX"," Y "," Y ",
-							'X',Adamantite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(CobaltSword, 1),
-					new Object[]{ " X "," X "," Y ",
-							'X',Cobalt,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(CobaltHoe, 1),
-					new Object[]{ "XX "," Y "," Y ",
-							'X',Cobalt,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(CobaltShovel, 1),
-					new Object[]{ " X "," Y "," Y ",
-							'X',Cobalt,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(CobaltAxe, 1),
-					new Object[]{ "XX ","XY "," Y ",
-							'X',Cobalt,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(CobaltPickaxe, 1),
-					new Object[]{ "XXX"," Y "," Y ",
-							'X',Cobalt,'Y',Items.stick});		
-			
-			GameRegistry.addRecipe(new ItemStack(DemoniteSword, 1),
-					new Object[]{ " X "," X "," Y ",
-							'X',Demonite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(DemoniteHoe, 1),
-					new Object[]{ "XX "," Y "," Y ",
-							'X',Demonite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(DemoniteShovel, 1),
-					new Object[]{ " X "," Y "," Y ",
-							'X',Demonite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(DemoniteAxe, 1),
-					new Object[]{ "XX ","XY "," Y ",
-							'X',Demonite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(DemonitePickaxe, 1),
-					new Object[]{ "XXX"," Y "," Y ",
-							'X',Demonite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(HellstoneSword, 1),
-					new Object[]{ " X "," X "," Y ",
-							'X',Hellstone,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(HellstoneHoe, 1),
-					new Object[]{ "XX "," Y "," Y ",
-							'X',Hellstone,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(HellstoneShovel, 1),
-					new Object[]{ " X "," Y "," Y ",
-							'X',Hellstone,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(HellstoneAxe, 1),
-					new Object[]{ "XX ","XY "," Y ",
-							'X',Hellstone,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(HellstonePickaxe, 1),
-					new Object[]{ "XXX"," Y "," Y ",
-							'X',Hellstone,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(MeteoriteSword, 1),
-					new Object[]{ " X "," X "," Y ",
-							'X',Meteorite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(MeteoriteHoe, 1),
-					new Object[]{ "XX "," Y "," Y ",
-							'X',Meteorite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(MeteoriteShovel, 1),
-					new Object[]{ " X "," Y "," Y ",
-							'X',Meteorite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(MeteoriteAxe, 1),
-					new Object[]{ "XX ","XY "," Y ",
-							'X',Meteorite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(MeteoritePickaxe, 1),
-					new Object[]{ "XXX"," Y "," Y ",
-							'X',Meteorite,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(MythrilSword, 1),
-					new Object[]{ " X "," X "," Y ",
-							'X',Mythril,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(MythrilHoe, 1),
-					new Object[]{ "XX "," Y "," Y ",
-							'X',Mythril,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(MythrilShovel, 1),
-					new Object[]{ " X "," Y "," Y ",
-							'X',Mythril,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(MythrilAxe, 1),
-					new Object[]{ "XX ","XY "," Y ",
-							'X',Mythril,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(MythrilPickaxe, 1),
-					new Object[]{ "XXX"," Y "," Y ",
-							'X',Mythril,'Y',Items.stick});
-			
-			GameRegistry.addRecipe(new ItemStack(ACrecycle, 1),
-					new Object[]{ "XXX","XZX","YQY",
-							'X',Corrugated,'Y',StrongCorrugated,'Z',Items.flint_and_steel,'Q',Items.water_bucket});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(HalfCorrugated, 2),
-					new Object[]{
-					new ItemStack(Corrugated,1),new ItemStack(Cutter,-1,32767)});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(HalfStrongCorrugated, 2),
-					new Object[]{
-					new ItemStack(StrongCorrugated,1),new ItemStack(Cutter,-1,32767)});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(HalfCorrugatedLight, 2),
-					new Object[]{
-					new ItemStack(CorrugatedLight,1),new ItemStack(Cutter,-1,32767)});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(HalfStrongCorrugatedLight, 2),
-					new Object[]{
-					new ItemStack(StrongCorrugatedLight,1),new ItemStack(Cutter,-1,32767)});
-			
-			GameRegistry.addRecipe(new ItemStack(RecycledCorrugated, 1),
-					new Object[]{ "X X","X X","XXX",
-							'X',RecycledPaper});
-			
-			GameRegistry.addRecipe(new ItemStack(RecycledCorrugated, 1),
-					new Object[]{ "XXX","XXX","XXX",
-							'X',RecycledCorrugatedBoard});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(RecycledCorrugatedBoard, 9),
-					new Object[]{
-					new ItemStack(RecycledCorrugated,1)});
-		
-			GameRegistry.addRecipe(
-					new ShapedOreRecipe(
-					new ItemStack(RecycledCorrugatedLight, 1, 0),
-					new Object[]{"Y Y","YXY","YYY",
-						Character.valueOf('X'),"gemFluorite",
-						Character.valueOf('Y'), new ItemStack(RecycledPaper, 1, 0)}));
-			
-			GameRegistry.addRecipe(new ItemStack(StrongRecycledCorrugated, 1),
-					new Object[]{ "X X","X X","XXX",
-							'X',StrongRecycledPaper});
-			
-			GameRegistry.addRecipe(new ItemStack(StrongRecycledCorrugated, 1),
-					new Object[]{ "XXX","XXX","XXX",
-							'X',StrongRecycledCorrugatedBoard});
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(StrongRecycledCorrugatedBoard, 9),
-					new Object[]{
-					new ItemStack(StrongRecycledCorrugated,1)});
-			
-			GameRegistry.addRecipe(
-					new ShapedOreRecipe(
-					new ItemStack(StrongRecycledCorrugatedLight, 1, 0),
-					new Object[]{"Y Y","YXY","YYY",
-						Character.valueOf('X'),"gemFluorite",
-						Character.valueOf('Y'), new ItemStack(StrongRecycledPaper, 1, 0)}));
-			
-			GameRegistry.registerWorldGenerator(new BlockoreFluorite(), 7);
-			
-			GameRegistry.registerWorldGenerator(new BlockoreTNT(), 8);
-			
-			GameRegistry.registerWorldGenerator(new BlockBlackStone(), 9);
-			
-			GameRegistry.registerWorldGenerator(new BlockoreAdamantite(), 6);
-			
-			GameRegistry.registerWorldGenerator(new BlockoreCobalt(), 5);
-			
-			GameRegistry.registerWorldGenerator(new BlockoreMythril(), 4);
-			
-			GameRegistry.registerWorldGenerator(new BlockoreDemonite(), 3);
-			
-			GameRegistry.registerWorldGenerator(new BlockoreHellstone(), 2);
-			
-			GameRegistry.registerWorldGenerator(new BlockoreMeteorite(), 1);
-			
-			GameRegistry.registerWorldGenerator(new BlockoreSilver(), 10);
-			
-			取引 = new ACTrade();
-						
-			VillagerRegistry.instance().registerVillagerId(ACVillagerID);
-			
-			VillagerRegistry.instance().registerVillageTradeHandler(ACVillagerID, 取引);
-			
-			proxy.init();
-			
-			EntityRegistry.registerModEntity(EntityCorrugated.class, "CorrugatedNew", CorrugatedNewID, this, 250, 1, false);
-			
-			EntityRegistry.addSpawn(EntityCorrugated.class, 20, 1, 4, EnumCreatureType.creature, BiomeGenBase.plains);
-			if(FMLCommonHandler.instance().getSide() == Side.CLIENT)
-			{
-				RenderingRegistry.registerEntityRenderingHandler(EntityCorrugated.class, new RenderCorrugated());
-			}
-			
-			EntityRegistry.registerModEntity(EntityCorrugatedCreeper.class, "CorrugatedCreeper", CorrugatedCreeperID, this, 250, 1, false);
-			
-			EntityRegistry.addSpawn(EntityCorrugatedCreeper.class, 20, 1, 4, EnumCreatureType.creature, BiomeGenBase.plains);
-			if(FMLCommonHandler.instance().getSide() == Side.CLIENT)
-			{
-				RenderingRegistry.registerEntityRenderingHandler(EntityCorrugatedCreeper.class, new RenderCorrugatedCreeper());
-			}
-			
-			GameRegistry.registerFuelHandler(new IFuelHandler()
-			{
-				public int getBurnTime(ItemStack fuel)
-				{
-					if(fuel.getItem() == Item.getItemFromBlock(Corrugated))
-					{
-						return 500;
-					}
-
-					if(fuel.getItem() == Item.getItemFromBlock(CorrugatedLight))
-					{
-						return 600;
-					}
-
-					if(fuel.getItem() == Item.getItemFromBlock(HalfCorrugated))
-					{
-						return 250;
-					}
-					
-					if(fuel.getItem() == Item.getItemFromBlock(HalfCorrugatedLight))
-					{
-						return 300;
-					}
-					
-					if(fuel.getItem().equals(CorrugatedBoard))
-					{
-						return 100;
-					}
-					
-					if(fuel.getItem().equals(CorrugatedAxe))
-					{
-						return 250;
-					}
-					
-					if(fuel.getItem() == Item.getItemFromBlock(CorrugatedChest))
-					{
-						return 800;
-					}
-					
-					if(fuel.getItem().equals(CorrugatedHoe))
-					{
-						return 250;
-					}
-					
-					if(fuel.getItem().equals(CorrugatedPickaxe))
-					{
-						return 250;
-					}
-					
-					if(fuel.getItem().equals(CorrugatedShovel))
-					{
-						return 250;
-					}
-					
-					if(fuel.getItem().equals(CorrugatedSword))
-					{
-						return 250;
-					}
-					return 0;
-				}
-			});
-			
-			NetworkRegistry.INSTANCE.registerGuiHandler(this, new GUIHandler());
-			
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Corrugated), 10);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(ACrecycle), 100);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Adamantite), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(AdamantiteAxe), 55);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(AdamantiteHoe), 55);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(AdamantitePickaxe), 55);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(AdamantiteShovel), 55);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(AdamantiteSword), 55);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(BlackStone), 2);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Blueberry), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Capsicum), 2);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(ChocolateBar), 10);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Cobalt), 60);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CobaltAxe), 65);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CobaltHoe), 65);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CobaltPickaxe), 65);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CobaltShovel), 65);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CobaltSword), 65);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CorrugatedAxe), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(TStone), 1);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CorrugatedBoard), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CorrugatedChest), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CorrugatedHoe), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CorrugatedLight),20);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CorrugatedPickaxe), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CorrugatedShovel), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CorrugatedSword), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(CorrugatedTorch), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Cutter), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(TemperedGlass), 100);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Demonite), 100);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(DemoniteAxe), 105);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(DemoniteHoe), 105);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(DemonitePickaxe), 105);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(DemoniteShovel), 105);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(DemoniteSword), 105);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(DrySpongeGourd), 105);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Dumpling), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Edge), 150);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(FermentedSoybeans), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Fluorite), 100);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(GlutinousRice), 10);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(GoldGravel), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Gum), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(JapaneseLeek), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Kimchi), 35);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(HalfCorrugated), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(HalfCorrugatedLight), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(HalfStrongCorrugated), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(HalfStrongCorrugatedLight), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Hellstone), 70);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(HellstoneAxe), 75);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(HellstoneHoe), 75);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(HellstonePickaxe), 75);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(HellstoneShovel), 75);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(HellstoneSword), 75);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Mythril), 80);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(MythrilAxe), 85);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(MythrilHoe), 85);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(MythrilPickaxe), 85);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(MythrilShovel), 85);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(MythrilSword), 85);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Meteorite), 40);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(MeteoriteAxe), 45);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(MeteoriteHoe), 45);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(MeteoritePickaxe), 45);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(MeteoriteShovel), 45);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(MeteoriteSword), 45);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Mustard), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(MintGum), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(PickledPlum), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Plum), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(PolishngPowder), 45);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Rice), 8);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(RiceCake), 100);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(RustyEdge), 0);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(oreAdamantite), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(oreCobalt), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(oreDemonite), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(oreFluorite), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(oreHellstone), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(oreMeteorite), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(oreMythril), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(oreSilver), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(oreTNT), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(SeaMustard), 65);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(SeaMustardRevision), 75);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Silver), 1005);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(SilverGravel), 105);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(SolarFragment), 65);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Spawn_Egg_Test), 0);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Spawn_Egg_CorrugatedCreeper), 0);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Soybeans), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(SoySauce), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(SpongeGourd), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Star), 10);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StarGravel), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(Straw), 25);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(SuperMintGum), 45);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongPaper), 10);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongCorrugated), 20);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongCorrugatedAxe), 25);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongCorrugatedBoard), 2);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongCorrugatedChest), 30);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongCorrugatedHoe), 25);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongCorrugatedLight), 20);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongCorrugatedPickaxe), 25);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongCorrugatedShovel), 25);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongCorrugatedSword), 25);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongCorrugatedTorch), 10);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongRecycledPaper), 15);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(RecycledPaper), 2);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongRecycledCorrugated), 75);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(RecycledCorrugated), 50);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongRecycledCorrugatedBoard), 10);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(RecycledCorrugatedBoard), 5);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(StrongRecycledCorrugatedLight), 200);
-			MCEconomyAPI.ShopManager.addPurchaseItem(new ItemStack(RecycledCorrugatedLight), 150);
-			MCEconomyAPI.ShopManager.addPurchaseEntity(AdditionCorrugated.Entity.EntityCorrugatedCreeper.class, 10);
-			MCEconomyAPI.ShopManager.addPurchaseEntity(AdditionCorrugated.Entity.EntityCorrugated.class, 1);
+		EntityRegistry.registerModEntity(EntityCorrugatedCreeper.class, "CorrugatedCreeper", CorrugatedCreeperID, this, 250, 1, true);
+		if(FMLCommonHandler.instance().getSide() == Side.CLIENT)
+		{
+			RenderingRegistry.registerEntityRenderingHandler(EntityCorrugatedCreeper.class, new RenderCorrugatedCreeper());
+		}
 	}
 	
 	@Mod.EventHandler
-	public void load(FMLInitializationEvent event)
+	public void postInit(FMLPostInitializationEvent event)
 	{
-		FMLCommonHandler.instance().bus().register(Cutter);
+		if (Loader.isModLoaded("mceconomy2"))
+		{
+			try
+			{
+				(new AdditionCorrugated.MCEconomy2.Price()).init(event);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace(System.err);
+			}
+		}
+		
+		if (Loader.isModLoaded("kegare.craftingex"))
+		{
+			try
+			{
+				(new AdditionCorrugated.CraftingEX.Blocks()).preInit(event);
+				
+				(new AdditionCorrugated.CraftingEX.Recipes()).addRecipe();
+				
+				(new AdditionCorrugated.CraftingEX.Recipes()).addShapelessRecipe();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace(System.err);
+			}
+		}
+		
+		if (DebugMode)
+		{
+			try
+			{
+				(new AdditionCorrugated.CraftingEX.Blocks()).preInit(event);
+				
+				(new AdditionCorrugated.CraftingEX.Recipes()).addRecipe();
+				
+				(new AdditionCorrugated.CraftingEX.Recipes()).addShapelessRecipe();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace(System.err);
+			}
+		}
+//		EntityRegistry.addSpawn(EntityCorrugatedCreeper.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.getBiomeGenArray());
 	}
 }
