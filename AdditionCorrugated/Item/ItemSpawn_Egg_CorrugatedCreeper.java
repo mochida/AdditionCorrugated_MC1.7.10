@@ -1,11 +1,11 @@
 package AdditionCorrugated.Item;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.lang.reflect.*;
+import java.util.*;
 import net.minecraft.block.*;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.creativetab.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
 import net.minecraft.util.*;
 import net.minecraft.world.World;

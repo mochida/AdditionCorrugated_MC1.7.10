@@ -1,7 +1,7 @@
 package AdditionCorrugated;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.creativetab.*;
+import net.minecraft.item.*;
 
 public class CreativeTabAdditionCorrugatedMOD extends CreativeTabs
 {
@@ -13,6 +13,6 @@ public class CreativeTabAdditionCorrugatedMOD extends CreativeTabs
 	@Override
 	public Item getTabIconItem()
 	{
-		return Item.getItemFromBlock(AdditionCorrugatedCore.Corrugated);
+		return Item.getItemFromBlock(AdditionCorrugated.Block.Blocks.Corrugated);
 	}
 }

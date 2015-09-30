@@ -52,7 +52,7 @@ public class BlockBlackStone extends Block implements IWorldGenerator
 			int genY = 0 + random.nextInt(256);
 			int genZ = z + random.nextInt(16);
 			
-			(new WorldGenMinable(AdditionCorrugatedCore.BlackStone, 10)).generate(world, random, genX, genY, genZ);
+			(new WorldGenMinable(AdditionCorrugated.Block.Blocks.BlackStone, 10)).generate(world, random, genX, genY, genZ);
 		}
 	}
 	

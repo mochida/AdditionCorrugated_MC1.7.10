@@ -1,28 +1,29 @@
 package AdditionCorrugated.Block;
 
-import java.util.Random;
+import java.util.*;
+import cpw.mods.fml.relauncher.*;
+import net.minecraft.block.*;
+import net.minecraft.block.material.*;
+import net.minecraft.client.renderer.texture.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.block.material.Material;
-
-public class BlockHalfStrongCorrugatedLight extends BlockSlab
+public class BlockHalfStrongCorrugatedLight extends Block
 {
-	public BlockHalfStrongCorrugatedLight(boolean p_i45410_1_, Material p_i45410_2_)
+	@SideOnly(Side.CLIENT)
+	private IIcon TopIcon;
+	
+	@SideOnly(Side.CLIENT)
+	private IIcon SideIcon;
+	
+	public BlockHalfStrongCorrugatedLight()
 	{
-		super(p_i45410_1_, Material.grass);
+		super(Material.tnt);
 		setBlockName("BlockHalfStrongCorrugatedLight");
-		setBlockTextureName("additioncorrugated:block_strongcorrugated");
 		setHardness(10.0F);
 		setResistance(500.0F);
 		setStepSound(Block.soundTypeStone);
 		setLightLevel(1.0F);
-	}
-
-	@Override
-	public String func_150002_b(int p_150002_1_)
-	{
-		return null;
 	}
 	
 	@Override
@@ -35,5 +36,38 @@ public class BlockHalfStrongCorrugatedLight extends BlockSlab
 	public int quantityDropped(Random rand)
 	{
 		return 1;
+	}
+	
+	@Override
+	public boolean isOpaqueCube()
+	{
+		return false;
+	}
+	
+	@Override
+	public void setBlockBoundsBasedOnState(IBlockAccess par1, int par2, int par3, int par4)
+	{
+		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
+	{
+		this.TopIcon = par1IconRegister.registerIcon("additioncorrugated:block_strongcorrugated");
+		this.SideIcon = par1IconRegister.registerIcon("additioncorrugated:block_strongcorrugated_side");
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(int par1, int par2)
+	{
+		if(par1 == 0 || par1 == 1)
+		{
+			return TopIcon;
+		}
+		else
+		{
+			return SideIcon;
+		}
 	}
 }

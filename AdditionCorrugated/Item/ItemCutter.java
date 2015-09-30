@@ -1,10 +1,8 @@
 package AdditionCorrugated.Item;
 
-import AdditionCorrugated.AdditionCorrugatedCore;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.eventhandler.*;
+import cpw.mods.fml.common.gameevent.PlayerEvent.*;
+import net.minecraft.item.*;
 
 public class ItemCutter extends Item
 {
@@ -32,7 +30,7 @@ public class ItemCutter extends Item
     @SubscribeEvent
 	public void onCrafting(ItemCraftedEvent event)
 	{
-		repair = AdditionCorrugatedCore.Cutter == event.crafting.getItem();
+		repair = AdditionCorrugated.Item.Items.Cutter == event.crafting.getItem();
 	}
 	
     @Override

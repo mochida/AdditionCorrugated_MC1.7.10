@@ -1,24 +1,32 @@
 package AdditionCorrugated.Block;
 
 import java.util.Random;
-import cpw.mods.fml.common.registry.GameRegistry;
-import AdditionCorrugated.AdditionCorrugatedCore;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import cpw.mods.fml.common.registry.*;
+import cpw.mods.fml.relauncher.*;
+import AdditionCorrugated.*;
+import net.minecraft.block.*;
+import net.minecraft.block.material.*;
+import net.minecraft.client.renderer.texture.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.inventory.*;
+import net.minecraft.item.*;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
 
 public class BlockACrecycle extends Block
 {
+	@SideOnly(Side.CLIENT)
+	private IIcon TopIcon;
+	
+	@SideOnly(Side.CLIENT)
+	private IIcon SideIcon;
+	
 	public BlockACrecycle()
 	{
 		super(Material.tnt);
 		setBlockName("BlockACrecycle");
-		setBlockTextureName("additioncorrugated:block_acrecycle");
-		setHardness(1.0F);
+		setHardness(2.5F);
 		setResistance(10.0F);
 		setStepSound(Block.soundTypeStone);
 	}
@@ -46,8 +54,28 @@ public class BlockACrecycle extends Block
 		return true;
     }
 	
-/**	public int addACRecycleRecipe()
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		return (Integer) null;		
-	}**/
+		this.TopIcon = par1IconRegister.registerIcon("additioncorrugated:acrecycle");
+		this.SideIcon = par1IconRegister.registerIcon("additioncorrugated:acrecycle_side");
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(int par1, int par2)
+	{
+		if(par1 == 1)
+		{
+			return TopIcon;
+		}
+		if(par1 == 0 || par1 == 2 || par1 == 3 || par1 == 4 || par1 == 5 || par1 == 6)
+		{
+			return SideIcon;
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

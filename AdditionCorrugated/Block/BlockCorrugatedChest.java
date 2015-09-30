@@ -19,7 +19,7 @@ public class BlockCorrugatedChest extends BlockChest
 	{
 		super(p_i45397_1_);
 		setBlockName("BlockCorrugatedChest");
-		setBlockTextureName("additioncorrugated:block_corrugated");
+		setBlockTextureName("additioncorrugated/textures/blocks/corrugated_chest");
 		setHardness(1.0F);
 		setResistance(0.5F);
 		setStepSound(Block.soundTypeStone);
@@ -38,6 +38,6 @@ public class BlockCorrugatedChest extends BlockChest
 		
 		public int getRenderType()
 		{
-			return AdditionCorrugatedCore.proxy.chestType;
+			return 22;
 		}
 }

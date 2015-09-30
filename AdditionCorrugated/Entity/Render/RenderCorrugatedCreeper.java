@@ -1,14 +1,14 @@
 package AdditionCorrugated.Entity.Render;
 
-import AdditionCorrugated.Entity.EntityCorrugatedCreeper;
-import net.minecraft.client.model.ModelCreeper;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import AdditionCorrugated.Entity.*;
+import net.minecraft.client.model.*;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.entity.*;
+import net.minecraft.util.*;
 
 public class RenderCorrugatedCreeper extends RenderLiving
 {
-	public static final ResourceLocation Icon = new ResourceLocation("additioncorrugated", "textures/entity/mobtest1.png");
+	public static final ResourceLocation Icon = new ResourceLocation("additioncorrugated", "textures/entity/mob1.png");
 	
 	public RenderCorrugatedCreeper()
 	{

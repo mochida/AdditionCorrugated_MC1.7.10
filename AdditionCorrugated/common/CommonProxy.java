@@ -1,24 +1,25 @@
-package AdditionCorrugated.common;
+package AdditionCorrugated.Common;
 
-import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.entity.player.*;
+import net.minecraft.world.*;
+import cpw.mods.fml.common.network.*;
 
-public class CommonProxy
+public class CommonProxy implements IGuiHandler
 {
-	public int chestType;
-	
 	public void init()
 	{
 		
 	}
 	
-/**	public World getClientWorld()
+	@Override
+	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
 		return null;
 	}
-	
-	public void registerTileEntity()
+
+	@Override
+	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		GameRegistry.registerTileEntity(TileEntity.calss, "TileEntity");
-	}**/
+		return null;
+	}
 }

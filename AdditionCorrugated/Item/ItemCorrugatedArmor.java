@@ -1,30 +1,45 @@
-//package AdditionCorrugated.Item;
-//
-//import cpw.mods.fml.relauncher.Side;
-//import cpw.mods.fml.relauncher.SideOnly;
-//import net.minecraft.client.renderer.texture.IIconRegister;
-//import net.minecraft.entity.*;
-//import net.minecraft.item.*;
-//import net.minecraft.util.IIcon;
-//
-//public class ItemCorrugatedArmor extends ItemArmor
-//{
-//	private IIcon ArmorIcon;
-//
-//	public ItemCorrugatedArmor(ArmorMaterial CORRUGATED_PG, int p1, int p2)
-//	{
-//		super(CORRUGATED_PG, p1, p2);
-//	}
-//	
-//	public ItemCorrugatedArmor setArmorTexture(IIcon Icon)
-//	{
-//		ArmorIcon = Icon;
-//		return this;
-//	}
-//	
-//	@Override
-//	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
-//	{
-//		return "additioncorrugated:armor_corrugated";
-//	}
-//}
+package AdditionCorrugated.Item;
+
+import net.minecraft.entity.*;
+import net.minecraft.item.*;
+import net.minecraft.item.Item.*;
+import net.minecraftforge.common.util.*;
+
+public class ItemCorrugatedArmor extends ItemArmor
+{
+	public static final String CorrugatedHelmet = "additioncorrugated:textures/item/helmet.png";
+	
+	public static final String CorrugatedChestplate = "additioncorrugated:textures/item/plate.png";
+	
+    public static final String CorrugatedLeggings = "additioncorrugated:textures/item/leg.png";
+    
+    public static final String CorrugatedBoots = "additioncorrugated:textures/item/boots.png";
+    
+    public ItemCorrugatedArmor(ArmorMaterial CorrugatedArmor, int par2, int par3)
+	{
+		super(AdditionCorrugated.Item.Items.CorrugatedArmorMaterial, 0, 0);
+	}
+    
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String layer)
+    {
+    	if(4 - slot == 0)
+    	{
+    		return CorrugatedHelmet;
+    	}
+    	if(4 - slot == 1)
+    	{
+    		return CorrugatedChestplate;
+    	}
+    	if(4 - slot == 2)
+    	{
+    		return CorrugatedLeggings;
+    	}
+    	if(4 - slot == 3)
+    	{
+    		return CorrugatedBoots;
+    	}
+    	
+		return "";
+	}
+}
